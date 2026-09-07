@@ -1,13 +1,39 @@
-name: First workflow
+name: Build and deploy
 on: push
 jobs:
-    test-jobs:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Test job welcom message
-              run: echo "Executing the test job"
-            
-            - name: checkout the repository
-              uses: actions/checkout@v7
-            - name: readme file content
-              run: cat README.md
+  docker-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build the image
+        env:
+           CONTAINER_REGISTRY: docker.io
+           DOCKER_USERNAME: wissem
+           IMAGE_NAME: app
+        run: echo docker build . -t $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAME
+
+      - name: Login
+        run: echo docker login --username=$DOCKER_USERNAME --password=*******
+
+      - name: Push the image
+        run: echo docekr push $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAME
+
+  deploy-job:
+    needs: docker-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run the app
+        run: echo docker run $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAM
+
+# name: First workflow
+# on: push
+# jobs:
+#    test-jobs:
+#        runs-on: ubuntu-latest
+#       steps:
+#            - name: Test job welcom message
+#              run: echo "Executing the test job"
+#            
+#            - name: checkout the repository
+#              uses: actions/checkout@v7
+#            - name: readme file content
+#              run: cat README.md
