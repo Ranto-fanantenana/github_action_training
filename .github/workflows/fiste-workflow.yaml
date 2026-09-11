@@ -45,7 +45,7 @@ jobs:
       - name: Deploy the app
         run: |
           sleep 1
-          cat app.txt
+          cat ${{ env.FILE_NAME }}
           echo "deploying the app ..." >> ${{ env.FILE_NAME }}
 
 ########variable
