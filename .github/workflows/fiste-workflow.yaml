@@ -1,5 +1,8 @@
 name: First workflow
 on: push
+env:
+          FILE_NAME: app2.txt
+          TEXT_CONTENT: "hello world"
 jobs:
   build-job:
     runs-on: ubuntu-latest
@@ -7,13 +10,13 @@ jobs:
       - name: Build the app
         run: |
           sleep 3
-          echo "building the app ..." > app.txt
+          echo $TEXT_CONTENT >> $FILE_NAME
 
       - name: use upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: app.txt
-          path: app.txt 
+          name: $FILE_NAME
+          path: $FILE_NAME
 
   test-job:
     needs: build-job
@@ -22,13 +25,13 @@ jobs:
       - name: use download artifact
         uses: actions/download-artifact@v8
         with:
-          name: app.txt
+          name: $FILE_NAME
 
       - name: Test the app
         run: |
           sleep 3
-          cat app.txt
-          echo "testing the app ..." > app.txt
+          cat $FILE_NAME
+          echo "testing the app ..." >> $FILE_NAME
 
   deploy-job:
     needs: test-job
@@ -37,13 +40,13 @@ jobs:
       - name: use download artifact
         uses: actions/download-artifact@v8
         with:
-          name: app.txt
-          
+          name: $FILE_NAME
+
       - name: Deploy the app
         run: |
           sleep 1
           cat app.txt
-          echo "deploying the app ..." > app.txt
+          echo "deploying the app ..." >> $FILE_NAME
 
 ########variable
 # name: Build and deploy
