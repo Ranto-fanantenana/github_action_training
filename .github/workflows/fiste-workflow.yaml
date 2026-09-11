@@ -3,29 +3,47 @@ on: push
 jobs:
   build-job:
     runs-on: ubuntu-latest
-    steps:
+    steps:         
       - name: Build the app
         run: |
           sleep 3
           echo "building the app ..." > app.txt
+
+      - name: use upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: app.txt
+          path: app.txt 
+
   test-job:
     needs: build-job
     runs-on: ubuntu-latest
     steps:
+      - name: use download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: app.txt
+
       - name: Test the app
         run: |
           sleep 3
           cat app.txt
-          echo "testing the app ..." >> app.txt
+          echo "testing the app ..." > app.txt
+
   deploy-job:
     needs: test-job
     runs-on: ubuntu-latest
     steps:
+      - name: use download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: app.txt
+          
       - name: Deploy the app
         run: |
           sleep 1
           cat app.txt
-          echo "deploying the app ..." >> app.txt
+          echo "deploying the app ..." > app.txt
 
 ########variable
 # name: Build and deploy
