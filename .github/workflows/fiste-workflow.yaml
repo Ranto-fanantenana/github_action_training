@@ -30,8 +30,8 @@ jobs:
       - name: Test the app
         run: |
           sleep 3
-          cat ${{ env.FILE_NAME }}
-          echo "testing the app ..." >> ${{ env.FILE_NAME }}
+          cat "$FILE_NAME"
+          echo "testing the app ..." >> "$FILE_NAME"
 
   deploy-job:
     needs: test-job
@@ -45,8 +45,8 @@ jobs:
       - name: Deploy the app
         run: |
           sleep 1
-          cat ${{ env.FILE_NAME }}
-          echo "deploying the app ..." >> ${{ env.FILE_NAME }}
+          cat "$FILE_NAME"
+          echo "deploying the app ..." >> "$FILE_NAME"
 
 ########variable
 # name: Build and deploy
