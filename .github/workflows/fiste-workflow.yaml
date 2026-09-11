@@ -1,29 +1,61 @@
-name: Build and deploy
+name: First workflow
 on: push
-env:
-           CONTAINER_REGISTRY: docker.io
-           DOCKER_USERNAME: wissem
-           IMAGE_NAME: app
 jobs:
-  docker-job:
+  build-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Build the image
-        run: echo docker build . -t $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAME
-
-      - name: Login
-        run: echo docker login --username=$DOCKER_USERNAME --password=*******
-
-      - name: Push the image
-        run: echo docekr push $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAME
-
+      - name: Build the app
+        run: |
+          sleep 3
+          echo "building the app ..." > app.txt
+  test-job:
+    needs: build-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test the app
+        run: |
+          sleep 3
+          cat app.txt
+          echo "testing the app ..." >> app.txt
   deploy-job:
-    needs: docker-job
+    needs: test-job
     runs-on: ubuntu-latest
     steps:
-      - name: Run the app
-        run: echo docker run $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAM
+      - name: Deploy the app
+        run: |
+          sleep 1
+          cat app.txt
+          echo "deploying the app ..." >> app.txt
 
+########variable
+# name: Build and deploy
+# on: push
+# env:
+#           CONTAINER_REGISTRY: docker.io
+#           DOCKER_USERNAME: wissem
+#           IMAGE_NAME: app
+# jobs:
+#  docker-job:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Build the image
+#        run: echo docker build . -t $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAME
+#
+#      - name: Login
+#        run: echo docker login --username=$DOCKER_USERNAME --password=*******
+#
+#      - name: Push the image
+#        run: echo docekr push $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAME
+
+#  deploy-job:
+#    needs: docker-job
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Run the app
+#        run: echo docker run $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAM
+
+
+####### basic
 # name: First workflow
 # on: push
 # jobs:
