@@ -10,13 +10,13 @@ jobs:
       - name: Build the app
         run: |
           sleep 3
-          echo $TEXT_CONTENT >> $FILE_NAME
+          echo "$TEXT_CONTENT" >> "$FILE_NAME"
 
       - name: use upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: $FILE_NAME
-          path: $FILE_NAME
+          name: ${{ env.FILE_NAME }}
+          path: ${{ env.FILE_NAME }}
 
   test-job:
     needs: build-job
@@ -25,13 +25,13 @@ jobs:
       - name: use download artifact
         uses: actions/download-artifact@v8
         with:
-          name: $FILE_NAME
+          name: ${{ env.FILE_NAME }}
 
       - name: Test the app
         run: |
           sleep 3
-          cat $FILE_NAME
-          echo "testing the app ..." >> $FILE_NAME
+          cat ${{ env.FILE_NAME }}
+          echo "testing the app ..." >> ${{ env.FILE_NAME }}
 
   deploy-job:
     needs: test-job
@@ -40,13 +40,13 @@ jobs:
       - name: use download artifact
         uses: actions/download-artifact@v8
         with:
-          name: $FILE_NAME
+          name: ${{ env.FILE_NAME }}
 
       - name: Deploy the app
         run: |
           sleep 1
           cat app.txt
-          echo "deploying the app ..." >> $FILE_NAME
+          echo "deploying the app ..." >> ${{ env.FILE_NAME }}
 
 ########variable
 # name: Build and deploy
