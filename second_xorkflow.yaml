@@ -1,0 +1,102 @@
+name: First workflow
+on: workflow_dispatch
+env:
+          FILE_NAME: app2.txt
+          TEXT_CONTENT: "hello world"
+          DOCKER_USERNAME: "ranto"
+          
+jobs:
+  build-job:
+    runs-on: ubuntu-latest
+    steps:         
+      - name: Build the app
+        run: |
+          sleep 3
+          echo "$TEXT_CONTENT" > "$FILE_NAME"
+          echo "building app ..."
+    
+      - name: display username and paswword
+        run: |
+          sleep 2
+          echo " username=${{ env.DOCKER_USERNAME }} password=${{ secrets.DOCKER_PASSWORD }}"
+
+      - name: use upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.FILE_NAME }}
+          path: ${{ env.FILE_NAME }}
+
+  test-job:
+    needs: build-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: use download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ env.FILE_NAME }}
+
+      - name: Test the app
+        run: |
+          sleep 3
+          cat "$FILE_NAME"
+          echo "testing the app ..."
+          
+
+  deploy-job:
+    needs: test-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: use download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ env.FILE_NAME }}
+
+      - name: Deploy the app
+        run: |
+          sleep 1
+          cat "$FILE_NAME"
+          echo "deploying the app ..."
+          
+
+########variable
+# name: Build and deploy
+# on: push
+# env:
+#           CONTAINER_REGISTRY: docker.io
+#           DOCKER_USERNAME: wissem
+#           IMAGE_NAME: app
+# jobs:
+#  docker-job:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Build the image
+#        run: echo docker build . -t $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAME
+#
+#      - name: Login
+#        run: echo docker login --username=$DOCKER_USERNAME --password=*******
+#
+#      - name: Push the image
+#        run: echo docekr push $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAME
+
+#  deploy-job:
+#    needs: docker-job
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Run the app
+#        run: echo docker run $CONTAINER_REGISTRY/$DOCKER_USERNAME/$IMAGE_NAM
+
+
+####### basic
+# name: First workflow
+# on: push
+# jobs:
+#    test-jobs:
+#        runs-on: ubuntu-latest
+#       steps:
+#            - name: Test job welcom message
+#              run: echo "Executing the test job"
+#            
+#            - name: checkout the repository
+#              uses: actions/checkout@v7
+#            - name: readme file content
+#              run: cat README.md
