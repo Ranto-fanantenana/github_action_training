@@ -1,5 +1,5 @@
 name: First workflow
-on: push
+on: workflow_dispatch
 env:
           FILE_NAME: app2.txt
           TEXT_CONTENT: "hello world"
