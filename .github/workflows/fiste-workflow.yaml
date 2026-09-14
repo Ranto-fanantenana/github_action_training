@@ -3,6 +3,8 @@ on: push
 env:
           FILE_NAME: app2.txt
           TEXT_CONTENT: "hello world"
+          DOCKER_USERNAME: "ranto"
+          DOCKER_PASSWORD: 1234
 jobs:
   build-job:
     runs-on: ubuntu-latest
@@ -10,7 +12,13 @@ jobs:
       - name: Build the app
         run: |
           sleep 3
-          echo "$TEXT_CONTENT" >> "$FILE_NAME"
+          echo "$TEXT_CONTENT" > "$FILE_NAME"
+          echo "building app ..."
+    
+      - name: display username and paswword
+        ran: |
+          sleep 2
+          echo " username=$DOCKER_USERNAME password=$DOCKER_PASSWORD"
 
       - name: use upload artifact
         uses: actions/upload-artifact@v7
@@ -31,8 +39,8 @@ jobs:
         run: |
           sleep 3
           cat "$FILE_NAME"
-          echo "testing the app ..." >> "$FILE_NAME"
-          cat "$FILE_NAME"
+          echo "testing the app ..."
+          
 
   deploy-job:
     needs: test-job
@@ -47,8 +55,8 @@ jobs:
         run: |
           sleep 1
           cat "$FILE_NAME"
-          echo "deploying the app ..." >> "$FILE_NAME"
-          cat "$FILE_NAME"
+          echo "deploying the app ..."
+          
 
 ########variable
 # name: Build and deploy
