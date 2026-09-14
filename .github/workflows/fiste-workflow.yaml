@@ -4,7 +4,7 @@ env:
           FILE_NAME: app2.txt
           TEXT_CONTENT: "hello world"
           DOCKER_USERNAME: "ranto"
-          DOCKER_PASSWORD: 1234
+          
 jobs:
   build-job:
     runs-on: ubuntu-latest
@@ -18,7 +18,7 @@ jobs:
       - name: display username and paswword
         run: |
           sleep 2
-          echo " username=$DOCKER_USERNAME password=$DOCKER_PASSWORD"
+          echo " username=${{ env.DOCKER_USERNAME }} password=${{ secrets.DOCKER_PASSWORD }}"
 
       - name: use upload artifact
         uses: actions/upload-artifact@v7
