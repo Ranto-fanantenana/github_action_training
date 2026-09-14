@@ -16,7 +16,7 @@ jobs:
           echo "building app ..."
     
       - name: display username and paswword
-        ran: |
+        run: |
           sleep 2
           echo " username=$DOCKER_USERNAME password=$DOCKER_PASSWORD"
 
