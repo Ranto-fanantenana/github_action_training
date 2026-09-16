@@ -1,5 +1,5 @@
 name: First workflow
-on: workflow_dispatch
+on: push
 env:
           FILE_NAME: app2.txt
           TEXT_CONTENT: "hello world"
@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:         
       - name: Build the app
+        timeout-minutes: 1
         run: |
-          sleep 3
-          echo "$TEXT_CONTENT" > "$FILE_NAME"
-          echo "building app ..."
+          sleep 1000
+          
     
 #      - name: display username and paswword
 #        run: |
