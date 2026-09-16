@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: group
+      cancel-in-progress: true
     steps:
       - name: Test the app
         run: |
