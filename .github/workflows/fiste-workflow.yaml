@@ -10,8 +10,11 @@ jobs:
       - name: Building the app
         run: |
           sleep 1
-          echo "Bonjour tput le monde..."
-
+          echo "Bonjour tout le monde..."
+      - name: Building the app
+        run: |
+          sleep 1
+          echo "Actually building app"
   test-job:
     needs: build-job
     runs-on: ubuntu-latest
