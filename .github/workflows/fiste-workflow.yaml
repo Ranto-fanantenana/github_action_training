@@ -1,31 +1,44 @@
-name: First workflow
+name: Test a docker image
 on: push
-env:
-          FILE_NAME: app2.txt
-          TEXT_CONTENT: "hello world"                   
 jobs:
-  build-job:
-    runs-on: ubuntu-latest
-    steps:         
-      - name: Building the app
-        run: |
-          sleep 1
-          echo "Bonjour tout le monde..."
-      - name: Building the app
-        run: |
-          sleep 3
-          echo "Actually building app"
-  test-job:
-    needs: build-job
-    runs-on: ubuntu-latest
-    concurrency:
-      group: group
-      cancel-in-progress: true
+  deploy:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Test the app
-        run: |
-          sleep 30000
-          echo "testing the app ..."
+      - name: Create a container on ubuntu
+        run: docker run hello-world
+
+
+# name: First workflow
+# on: push
+# env:
+#           FILE_NAME: app2.txt
+#           TEXT_CONTENT: "hello world"                   
+# jobs:
+#   build-job:
+#     runs-on: ubuntu-latest
+#     steps:         
+#       - name: Building the app
+#         run: |
+#           sleep 1
+#           echo "Bonjour tout le monde..."
+#       - name: Building the app
+#         run: |
+#           sleep 3
+#           echo "Actually building app"
+#   test-job:
+#     needs: build-job
+#     runs-on: ubuntu-latest
+#     concurrency:
+#       group: group
+#       cancel-in-progress: true
+#     steps:
+#       - name: Test the app
+#         run: |
+#           sleep 30000
+#           echo "testing the app ..."
           
           
 
