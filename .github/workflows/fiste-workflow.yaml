@@ -1,7 +1,6 @@
 name: Test a docker image
 on: push
 jobs:
-  concurrency:
   deploy_job:
     strategy:
       fail-fast: true
