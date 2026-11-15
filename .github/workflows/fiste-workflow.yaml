@@ -1,7 +1,7 @@
 name: Test a docker image
 on: push
 jobs:
-  deploy:
+  deploy_job:
     strategy:
       fail-fast: false
       matrix:
