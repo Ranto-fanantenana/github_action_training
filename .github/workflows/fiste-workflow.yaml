@@ -1,6 +1,7 @@
 name: Test a docker image
 on: push
 jobs:
+  concurrency:
   deploy_job:
     strategy:
       fail-fast: true
@@ -11,6 +12,9 @@ jobs:
           - os: windows-latest
             images: nginx
     runs-on: ${{ matrix.os }}
+    concurrency:
+      group: example-group
+      cancel-in-progress: true
     steps:
       - name: Create a ${{ matrix.images }} container on ${{  matrix.os }}
         run: docker run ${{ matrix.images }}
