@@ -3,7 +3,7 @@ on: push
 jobs:
   deploy_job:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         os: [ubuntu-latest, windows-latest]
         images: [hello-world, nginx]
